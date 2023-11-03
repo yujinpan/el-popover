@@ -1,3 +1,3 @@
-import ElPopover from '@/components/ElPopover.vue';
+import ElPopover from '@/components/ElPopover';
 
 export default ElPopover;

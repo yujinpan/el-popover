@@ -1,4 +1,3 @@
-<script lang="ts">
 import { Popover } from 'element-ui';
 import { defineComponent } from 'vue-component-pluggable';
 
@@ -32,4 +31,3 @@ export default defineComponent({
     this.parentElement = this.$el?.parentElement;
   },
 });
-</script>
