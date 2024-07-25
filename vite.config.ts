@@ -4,7 +4,7 @@ import vue2 from '@vitejs/plugin-vue2';
 import vue2Jsx from '@vitejs/plugin-vue2-jsx';
 import { resolve } from 'path';
 import { resolveWithAlias } from 'path-ops';
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vitest/config';
 
 const alias = {
   '@': resolve('src'),
@@ -47,5 +47,6 @@ export default defineConfig({
   // https://vitest.dev/config/
   test: {
     dir: 'src',
+    environment: 'jsdom',
   },
 });
