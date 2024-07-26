@@ -1,6 +1,6 @@
 import { Button } from 'element-ui';
 import Vue from 'vue';
-import '@/style.scss';
+import '@/style.css';
 
 import 'element-ui/lib/theme-chalk/button.css';
 
