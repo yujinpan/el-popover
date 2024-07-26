@@ -1,33 +1,52 @@
-import type { VNode } from 'vue';
-import type Vue from 'vue';
+import { defineComponent } from 'vue-component-pluggable';
 
 export function findValidElem(el: Element): Element {
   return el.tagName ? el : findValidElem(el.parentElement as Element);
 }
 
-export function isComponentElem(el: Element): boolean {
-  const component = findComponent(el);
-  return component ? !isComponentSlots(el, component) : false;
-}
+export function definePopoverComponent<T>(component: T): T {
+  return defineComponent({
+    name: component.name,
+    props: {
+      ...component.props,
 
-export function findComponent(el: Element & { __vue__?: any }): any {
-  if (el?.__vue__) {
-    return el.__vue__;
-  } else if (el?.parentElement) {
-    return findComponent(el.parentElement);
-  }
-}
+      reference: {},
+      // append to component root, default false to parent element
+      root: { type: Boolean },
+    },
+    data() {
+      return {
+        parentElement: null as Element | null,
+      };
+    },
+    render(h) {
+      if (!this.parentElement) return undefined;
 
-function isComponentSlots(el: Element, component: Vue): boolean {
-  const some = (vnode: VNode): boolean => {
-    if (vnode?.elm === el) {
-      return true;
-    } else if (vnode?.children) {
-      return vnode?.children.some((item: any) => some(item));
-    }
-    return false;
-  };
-  return !!component?.$vnode?.componentOptions?.children?.some((item: any) =>
-    some(item),
-  );
+      return h(component, {
+        props: {
+          ...this.$props,
+          reference: this.$props.reference || this.parentElement,
+        },
+        attrs: {
+          ...this.$attrs,
+          reference: this.$props.reference || this.parentElement,
+        },
+        on: this.$listeners,
+        scopedSlots: this.$scopedSlots,
+        staticStyle: {
+          display: 'none',
+        },
+      });
+    },
+    mounted() {
+      this.parentElement = this.root
+        ? findValidElem(this.$parent?.$el as any)
+        : findValidElem(this.$el?.parentElement as any);
+
+      if (!this.parentElement) {
+        // eslint-disable-next-line no-console
+        console.warn('[ElPopover] parentElement can not found.');
+      }
+    },
+  }) as any;
 }

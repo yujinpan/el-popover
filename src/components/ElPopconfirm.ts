@@ -1,13 +1,7 @@
 import { Popconfirm } from 'element-ui';
 
-import ElPopover from './ElPopover';
+import { definePopoverComponent } from '@/components/utils';
 
-const ElPopconfirm: typeof Popconfirm = {
-  ...Popconfirm,
-  components: {
-    ...Popconfirm.components,
-    ElPopover,
-  },
-} as any;
+const ElPopconfirm = definePopoverComponent(Popconfirm);
 
 export default ElPopconfirm;
