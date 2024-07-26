@@ -3,7 +3,9 @@ node_modules
 stat
 lib
 types
-docs/.vuepress/dist
+dist
+docs/.vitepress/cache
+docs/.vitepress/dist
 
 # local env files
 .env.local
