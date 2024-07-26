@@ -1,3 +1,4 @@
+import { nextTick, type VNodeData } from 'vue';
 import { defineComponent } from 'vue-component-pluggable';
 
 export function findValidElem(el: Element): Element {
@@ -6,37 +7,44 @@ export function findValidElem(el: Element): Element {
 
 export function definePopoverComponent<T>(component: T): T {
   return defineComponent({
+    mixins: component.mixins?.map((item) => ({ props: item.props })),
     name: component.name,
     props: {
       ...component.props,
 
-      reference: {},
       // append to component root, default false to parent element
       root: { type: Boolean },
     },
     data() {
       return {
         parentElement: null as Element | null,
+        currentVisible: false,
       };
     },
     render(h) {
-      if (!this.parentElement) return undefined;
+      const reference =
+        this.$props.reference || this.$attrs.reference || this.parentElement;
+
+      if (!reference) return undefined;
 
       return h(component, {
+        ref: 'popover',
         props: {
           ...this.$props,
-          reference: this.$props.reference || this.parentElement,
+          reference,
+          // currentVisible will be true when mounted
+          value: this.currentVisible && this.value,
         },
         attrs: {
           ...this.$attrs,
-          reference: this.$props.reference || this.parentElement,
+          reference,
         },
         on: this.$listeners,
         scopedSlots: this.$scopedSlots,
         staticStyle: {
           display: 'none',
         },
-      });
+      } as VNodeData);
     },
     mounted() {
       this.parentElement = this.root
@@ -47,6 +55,10 @@ export function definePopoverComponent<T>(component: T): T {
         // eslint-disable-next-line no-console
         console.warn('[ElPopover] parentElement can not found.');
       }
+
+      nextTick(() => {
+        this.currentVisible = true;
+      });
     },
   }) as any;
 }
