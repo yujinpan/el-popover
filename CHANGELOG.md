@@ -1,3 +1,13 @@
+## [1.0.2](https://github.com/yujinpan/el-popover/compare/v1.0.1...v1.0.2) (2024-07-26)
+
+### Bug Fixes
+
+- popover can not show immediate ([9c37542](https://github.com/yujinpan/el-popover/commit/9c375426c625d42199945d8059b049cbb27288ba))
+
+### Features
+
+- add el-dropdown support ([481c50d](https://github.com/yujinpan/el-popover/commit/481c50dc09244fa3dae32439dba4f48fa60aaa32))
+
 ## 1.0.1 (2024-07-26)
 
 ### Features
