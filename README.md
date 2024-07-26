@@ -1,6 +1,6 @@
 # ElPopover
 
-el-popover is used internally.
+el-popover/el-popconfirm/el-dropdown is used internally.
 
 ## Why
 

@@ -22,6 +22,25 @@
       without <code>root</code> property
       <ElPopover>Content</ElPopover>
     </el-button>
+    <hr />
+    <button>
+      ElDropdown with html element
+      <ElDropdown>
+        <ElDropdownMenu>
+          <ElDropdownItem>Menu 1</ElDropdownItem>
+          <ElDropdownItem>Menu 2</ElDropdownItem>
+        </ElDropdownMenu>
+      </ElDropdown>
+    </button>
+    <el-button>
+      ElDropdown with el-button
+      <ElDropdown root>
+        <ElDropdownMenu>
+          <ElDropdownItem>Menu 1</ElDropdownItem>
+          <ElDropdownItem>Menu 2</ElDropdownItem>
+        </ElDropdownMenu>
+      </ElDropdown>
+    </el-button>
   </div>
 </template>
 
