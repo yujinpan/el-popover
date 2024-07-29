@@ -1,3 +1,9 @@
+## [1.0.3](https://github.com/yujinpan/el-popover/compare/v1.0.2...v1.0.3) (2024-07-29)
+
+### Features
+
+- add lazy load for components ([8ce0346](https://github.com/yujinpan/el-popover/commit/8ce0346d090f894d1056d69f09b7c59066aa9f54))
+
 ## [1.0.2](https://github.com/yujinpan/el-popover/compare/v1.0.1...v1.0.2) (2024-07-26)
 
 ### Bug Fixes
