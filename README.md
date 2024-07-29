@@ -1,10 +1,10 @@
 # ElPopover
 
-el-popover/el-popconfirm/el-dropdown is used internally.
+el-popover/el-popconfirm/el-dropdown is used internally & lazy load.
 
 ## Why
 
-Do not change the original structure.
+- **Do not change the original structure**
 
 ```vue
 <template>
@@ -16,17 +16,37 @@ Do not change the original structure.
 </template>
 ```
 
-It will additionally generate multiple dom levels.
+> It will additionally generate multiple dom levels.
 
 ```vue
 <template>
   <button>test button 1</button>
+  <!-- Struct Blocked -->
   <ElPopover>
-    // [!code --] test popover
+    test popover
     <button slot="reference">test button 2</button>
   </ElPopover>
-  // [!code --]
 </template>
+```
+
+- **Render when triggered**
+
+```vue
+<template>
+  <button>
+    test button
+    <ElPopover>test popover</ElPopover> // [!code ++]
+  </button>
+</template>
+```
+
+Result:
+
+```html
+<button>
+  test button
+  <!-- will be show when click -->
+</button>
 ```
 
 ## Usage
@@ -37,12 +57,19 @@ npm i --save el-popover
 
 ```ts
 import ElementUI from "element-ui";
-import { ElPopover, ElPopconfirm } from "el-popover";
+import {
+  ElPopover,
+  ElPopconfirm,
+  ElDropdown,
+  ElDropdownMenu,
+} from "el-popover";
 
 Vue.use(ElementUI);
 // Override registered ElPopover.
 Vue.use(ElPopover);
 Vue.use(ElPopconfirm);
+Vue.use(ElDropdown);
+Vue.use(ElDropdownMenu);
 ```
 
 <demo name="el-popover" />
