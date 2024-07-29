@@ -1,3 +1,9 @@
+## [1.0.5](https://github.com/yujinpan/el-popover/compare/v1.0.4...v1.0.5) (2024-07-29)
+
+### Bug Fixes
+
+- popover don't show when appendToBody=false ([f817286](https://github.com/yujinpan/el-popover/commit/f817286decbf12139476ec67785e147b54e8d51d))
+
 ## [1.0.4](https://github.com/yujinpan/el-popover/compare/v1.0.3...v1.0.4) (2024-07-29)
 
 ### Bug Fixes

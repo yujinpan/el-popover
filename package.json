@@ -1,7 +1,7 @@
 {
   "name": "el-popover",
   "description": "el-popover is used internally.",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "author": "yujinpan",
   "main": "lib/cjs/index.js",
   "module": "lib/es/index.js",
