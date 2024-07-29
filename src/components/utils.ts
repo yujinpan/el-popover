@@ -1,4 +1,4 @@
-import { nextTick, type VNodeData } from 'vue';
+import { nextTick, type PropType, type VNodeData } from 'vue';
 import { defineComponent } from 'vue-component-pluggable';
 
 export function findValidElem(el: Element): Element {
@@ -10,6 +10,10 @@ export function definePopoverComponent<T>(component: T): T {
     mixins: component.mixins?.map((item) => ({ props: item.props })),
     name: component.name,
     props: {
+      trigger: {
+        type: String as PropType<'click' | 'focus' | 'hover' | 'manual'>,
+        default: 'click',
+      },
       ...component.props,
 
       // append to component root, default false to parent element
@@ -19,25 +23,95 @@ export function definePopoverComponent<T>(component: T): T {
       return {
         parentElement: null as Element | null,
         currentVisible: false,
+        loaded: false,
       };
     },
-    render(h) {
-      const reference =
-        this.$props.reference || this.$attrs.reference || this.parentElement;
+    computed: {
+      currentReference() {
+        return (
+          this.$props.reference || this.$attrs.reference || this.parentElement
+        );
+      },
+      triggerEventName() {
+        return {
+          click: 'click',
+          focus: 'focusin',
+          hover: 'mouseenter',
+        }[this.trigger as string];
+      },
+    },
+    watch: {
+      currentReference: {
+        handler(val) {
+          if (val) {
+            val.setAttribute(
+              'tabindex',
+              val.getAttribute('tabindex') || this.tabindex || 0,
+            );
+            this.bindTriggerEvents(val);
+          }
+        },
+        immediate: true,
+      },
+    },
+    methods: {
+      handleLoaded() {
+        this.unbindTriggerEvents?.();
+        this.unbindTriggerEvents = null;
 
-      if (!reference) return undefined;
+        this.loaded = true;
+
+        this.triggerEventName &&
+          nextTick(() => {
+            this.currentReference.dispatchEvent(
+              new CustomEvent(this.triggerEventName),
+            );
+          });
+      },
+      handleManualLoaded() {
+        this.value && this.handleLoaded();
+      },
+      bindTriggerEvents(elem: Element) {
+        this.unbindTriggerEvents?.();
+
+        switch (this.trigger) {
+          case 'click':
+          case 'focus':
+          case 'hover':
+            elem.addEventListener(this.triggerEventName, this.handleLoaded);
+            this.unbindTriggerEvents = () =>
+              elem.removeEventListener(
+                this.triggerEventName,
+                this.handleLoaded,
+              );
+            break;
+          case 'manual':
+            this.unbindTriggerEvents = this.$watch(
+              'value',
+              this.handleManualLoaded,
+              {
+                immediate: true,
+              },
+            );
+            break;
+        }
+      },
+      unbindTriggerEvents() {},
+    },
+    render(h) {
+      if (!this.currentReference || !this.loaded) return undefined;
 
       return h(component, {
         ref: 'popover',
         props: {
           ...this.$props,
-          reference,
+          reference: this.currentReference,
           // currentVisible will be true when mounted
           value: this.currentVisible && this.value,
         },
         attrs: {
           ...this.$attrs,
-          reference,
+          reference: this.currentReference,
         },
         on: this.$listeners,
         scopedSlots: this.$scopedSlots,
@@ -59,6 +133,10 @@ export function definePopoverComponent<T>(component: T): T {
       nextTick(() => {
         this.currentVisible = true;
       });
+    },
+    beforeDestroy() {
+      this.unbindTriggerEvents?.();
+      this.unbindTriggerEvents = null;
     },
   }) as any;
 }
