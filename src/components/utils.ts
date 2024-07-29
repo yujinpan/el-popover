@@ -1,10 +1,6 @@
 import { nextTick, type PropType, type VNodeData } from 'vue';
 import { defineComponent } from 'vue-component-pluggable';
 
-export function findValidElem(el: Element): Element {
-  return el.tagName ? el : findValidElem(el.parentElement as Element);
-}
-
 export function definePopoverComponent<T>(component: T): T {
   return defineComponent({
     mixins: component.mixins?.map((item) => ({ props: item.props })),
@@ -122,7 +118,7 @@ export function definePopoverComponent<T>(component: T): T {
     },
     mounted() {
       this.parentElement = this.root
-        ? findValidElem(this.$parent?.$el as any)
+        ? findValidRootElem(this.$parent?.$el as any)
         : findValidElem(this.$el?.parentElement as any);
 
       if (!this.parentElement) {
@@ -139,4 +135,14 @@ export function definePopoverComponent<T>(component: T): T {
       this.unbindTriggerEvents = null;
     },
   }) as any;
+}
+
+function findValidElem(el: Element): Element {
+  return el.tagName ? el : findValidElem(el.parentElement as Element);
+}
+
+function findValidRootElem(el: Element): Element {
+  return el.tagName && el.__vue__
+    ? el
+    : findValidRootElem(el.parentElement as Element);
 }
