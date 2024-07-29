@@ -112,7 +112,7 @@ export function definePopoverComponent<T>(component: T): T {
         on: this.$listeners,
         scopedSlots: this.$scopedSlots,
         staticStyle: {
-          display: 'none',
+          display: 'inline',
         },
       } as VNodeData);
     },
