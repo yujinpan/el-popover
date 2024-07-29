@@ -1,3 +1,9 @@
+## [1.0.4](https://github.com/yujinpan/el-popover/compare/v1.0.3...v1.0.4) (2024-07-29)
+
+### Bug Fixes
+
+- component root element maybe multi-levels ([3263891](https://github.com/yujinpan/el-popover/commit/3263891ffc69f4eebdc3dcb0fa44ed1923a0b238))
+
 ## [1.0.3](https://github.com/yujinpan/el-popover/compare/v1.0.2...v1.0.3) (2024-07-29)
 
 ### Features
